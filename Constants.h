@@ -1,11 +1,11 @@
 #pragma once
 
 //main constants
-constexpr unsigned int SCREEN_WIDTH = 2560;
-constexpr unsigned int SCREEN_HEIGHT = 1440;
+constexpr unsigned int SCREEN_WIDTH = 1600;
+constexpr unsigned int SCREEN_HEIGHT = 900;
 constexpr unsigned int FRAME_RATE = 1000 / 60;
 
-constexpr unsigned int NUMBER_OF_OBJECTS = 165;
+constexpr unsigned int NUMBER_OF_OBJECTS = 65;
 
 //Drawable constants
 static const unsigned int PointDistance = 200;
