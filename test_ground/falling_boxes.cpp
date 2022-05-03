@@ -108,14 +108,14 @@ void drawSquare(b2Vec2* points,b2Vec2 center,float angle)
 void init()
 {
     world=new b2World(b2Vec2(0.0,9.81));
-    addRect(WIDTH/2,HEIGHT-50,WIDTH,30,false);
+    addRect(WIDTH/2-100,HEIGHT-50,WIDTH,30,false);
 }
 
 void display()
 {
-//    SDL_FillRect(screen,NULL,0);
     b2Body* tmp=world->GetBodyList();
     b2Vec2 points[4];
+    
     while(tmp)
     {
         for(int i=0;i<4;i++)
@@ -130,8 +130,6 @@ void display()
 
 int main(int argc,char** argv)
 {
-    SDL_Init(SDL_INIT_EVERYTHING);
-//    screen=SDL_SetVideoMode(640,480,32,SDL_SWSURFACE);
     SDL_Window *window;
     SDL_Surface *image;
 
@@ -141,7 +139,7 @@ int main(int argc,char** argv)
 
     // create the window like normal
     Uint32 flags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
-    window = SDL_CreateWindow("SDL2 Example", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WIDTH, HEIGHT, flags);
+    window = SDL_CreateWindow("Falling boxes", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WIDTH, HEIGHT, flags);
 
     ren2 = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
@@ -149,6 +147,8 @@ int main(int argc,char** argv)
     SDL_Event event;
     bool running=true;
     init();
+
+    int x{100};
     while(running)
     {
         start=SDL_GetTicks();
@@ -166,10 +166,17 @@ int main(int argc,char** argv)
                         case SDLK_q:
                             running=false;
                             break;
+
+                            case SDLK_k:
+                            x -= 20;
+                            break;
                     }
                     break;
                 case SDL_MOUSEBUTTONDOWN:
                     addRect(event.button.x,event.button.y,20,20,true);
+
+                    x += 15;
+
                     break;
 
             }
@@ -187,27 +194,19 @@ int main(int argc,char** argv)
 
         // draw example
         SDL_SetRenderDrawColor(ren2, 255, 255, 255, 255);
-        SDL_RenderDrawLine(ren2, 100, 100, 200, 100);
-        SDL_RenderFillRect(ren2, &rect);
-
-
+         SDL_RenderDrawLine(ren2, x, 100, 200, 100);
+        // SDL_RenderFillRect(ren2, &rect);
 
         display();
 
-
-
-
-
-
-
         SDL_RenderPresent(ren2);
 
-
-        world->Step(1.0/30.0,8,3);  //update
+        world->Step(1.0/60.0,8,3);  //update
 //        SDL_Flip(screen);
 //        SDL_UpdateWindowSurface(window);
-        if(1000.0/30>SDL_GetTicks()-start)
-            SDL_Delay(1000.0/30-(SDL_GetTicks()-start));
+        if(1000.0/60>SDL_GetTicks()-start)
+            SDL_Delay(1000.0/60-(SDL_GetTicks()-start));
     }
+
     SDL_Quit();
 }
