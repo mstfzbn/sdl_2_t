@@ -34,41 +34,7 @@ void swapValue(int& a,int& b)
 
 void drawLine(SDL_Surface* dest,int x0,int y0,int x1,int y1)
 {
-
     SDL_RenderDrawLine(ren2, x0, y0, x1, y1);
-
-//    int tmp;
-//    bool step;
-
-//    step=abs(y1-y0)>abs(x1-x0);
-//    if(step)
-//    {
-//        swapValue(x0,y0);
-//        swapValue(x1,y1);
-//    }
-
-//    if(x0>x1)
-//    {
-//        swapValue(x1,x0);
-//        swapValue(y1,y0);
-//    }
-//    float error=0.0;
-//    float y=y0;
-//    float roundError=(float)abs(y1-y0)/(x1-x0);
-//    int ystep=(y1>y0 ? 1 : -1);
-//    for(int i=x0;i<x1;i++)
-//    {
-////        if(step)
-////            putPixel(dest,y,i,255,255,255);
-////        else
-////            putPixel(dest,i,y,255,255,255);
-//        error+=roundError;
-//        if(error>=0.5)
-//        {
-//            y+=ystep;
-//            error-=1;
-//        }
-//    }
 }
 
 void rotateTranslate(b2Vec2& vector,const b2Vec2& center,float angle)
@@ -95,7 +61,6 @@ b2Body* addRect(int x,int y,int w,int h,bool dyn=true)
     fixturedef.shape=&shape;
     fixturedef.density=1.0;
     body->CreateFixture(&fixturedef);
-
 }
 
 void drawSquare(b2Vec2* points,b2Vec2 center,float angle)
@@ -128,6 +93,8 @@ void display()
     }
 }
 
+static       SDL_Rect rect;
+
 int main(int argc,char** argv)
 {
     SDL_Window *window;
@@ -141,7 +108,7 @@ int main(int argc,char** argv)
     Uint32 flags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
     window = SDL_CreateWindow("Falling boxes", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WIDTH, HEIGHT, flags);
 
-    ren2 = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+    ren2 = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED); //SDL_RENDERER_SOFTWARE for no HW aceleration and SDL_RENDERER_ACCELERATED to use it
 
     Uint32 start;
     SDL_Event event;
@@ -149,6 +116,12 @@ int main(int argc,char** argv)
     init();
 
     int x{100};
+    
+    rect.x = 50;
+    rect.y = 100;
+    rect.w = 200;
+    rect.h = 100;
+
     while(running)
     {
         start=SDL_GetTicks();
@@ -169,24 +142,66 @@ int main(int argc,char** argv)
 
                             case SDLK_k:
                             x -= 20;
+
+                             for(size_t i{0}; i < 200; ++i){
+                     auto side_a = (rand() % 1 + 1); 
+                     auto side_b = (rand() % 1 + 1); 
+                //////
+                    addRect(rand() % 1500 + 10, rand() % 680 + 10, side_a, side_a, true);
+                            }
+
                             break;
+
+                            case SDLK_l:
+                            x -= 200;
+
+                            //randomized sizes of boxes
+                            for(size_t i{0}; i < 20; ++i){
+                     auto side_a = (rand() % 70 + 10); 
+                     auto side_b = (rand() % 70 + 10); 
+                //////
+                    addRect(rand() % 1500 + 10, rand() % 680 + 10, side_a, side_a, true);
+                            }
+
+
+                            break;        
+
+                            case SDLK_w:
+
+
+
+                            for(size_t i{0}; i < world->GetBodyCount(); ++i){
+                                    world->DestroyBody(world->GetBodyList()); //will destroy last created body
+                            }
+                            break;
+
+                            case SDLK_a:
+                            rect.w += 20;
+                            break;
+
+                            case SDLK_s:
+                            x -= 200;
+                            break;
+
+                            case SDLK_d:
+                            rect.h -= 20;
+                            break;               
                     }
                     break;
                 case SDL_MOUSEBUTTONDOWN:
-                    addRect(event.button.x,event.button.y,20,20,true);
+                //randomized sizes of boxes
+                     auto side_a = (rand() % 70 + 10); 
+                     auto side_b = (rand() % 70 + 10); 
+                //////
+                    addRect(event.button.x, event.button.y, side_a, side_a, true);
 
                     x += 15;
 
                     break;
-
             }
         }
 
-        SDL_Rect rect;
-        rect.x = 50;
-        rect.y = 50;
-        rect.w = 10;
-        rect.h = 10;
+
 
         // clr scr
         SDL_SetRenderDrawColor(ren2, 0, 0, 0, 255);
@@ -194,7 +209,7 @@ int main(int argc,char** argv)
 
         // draw example
         SDL_SetRenderDrawColor(ren2, 255, 255, 255, 255);
-         SDL_RenderDrawLine(ren2, x, 100, 200, 100);
+         SDL_RenderDrawLine(ren2, x, rect.y, rect.w, rect.h);
         // SDL_RenderFillRect(ren2, &rect);
 
         display();
