@@ -48,14 +48,39 @@ int main(int argc, char* args[]) {
         while (SDL_PollEvent(&e) != 0)
         {
             //User requests quit
-            if ((e.type == SDL_QUIT) || (e.type == SDL_KEYDOWN)) //when a button is pressed
+            if (e.type == SDL_QUIT)
             {
                 quit = true;
             }
-            else if (e.type == SDL_MOUSEMOTION || e.type == SDL_MOUSEBUTTONDOWN || e.type == SDL_MOUSEBUTTONUP)
+            
+            if (e.type == SDL_MOUSEMOTION || e.type == SDL_MOUSEBUTTONDOWN || e.type == SDL_MOUSEBUTTONUP)
             {
                 SDL_GetMouseState(&coursor.x, &coursor.y);
-            }          
+            } 
+
+
+            if(e.type == SDL_KEYDOWN)
+            {
+                switch(e.key.keysym.sym)
+                {
+                    case SDLK_k:
+                        for (int i = 0; i < 100; ++i) //adds 100 of points
+                        {
+                                objects.push_back(new Drawable({ SCREEN_WIDTH, SCREEN_HEIGHT }));
+                        }
+                    break;
+
+                    case SDLK_l:
+                             objects.clear();
+                    break;
+
+                    case SDLK_q:
+                             quit = true;
+                    break;
+
+                    default: break;
+                }
+            }         
         }
 
         if (SDL_GetTicks() >= oldTime + FRAME_RATE)
