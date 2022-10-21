@@ -10,6 +10,35 @@
 #endif
 #include "../lib/box2d/include/box2d/box2d.h"
 
+
+#define DEBUG
+
+#ifdef DEBUG
+namespace DEBUG_TOOLS{
+
+    static clock_t starting_time;
+
+    static void StartProgramExecutionTimer()   
+    {
+        starting_time = clock();
+    }
+
+    static void StopProgramExecutionTimer()
+    {
+        static clock_t end_time = (clock() - starting_time);
+
+        //std::cout << "\033[0;32m Program execution time: "<< end_time <<" ms.\033[0m\n"; //working
+       
+       //with bold ms
+       std::cout << "\033[0;32m Program execution time: \033[0m" << "\033[1;32m" << (end_time / (double) CLOCKS_PER_SEC)<< "\033[0m" <<"\033[0;92m seconds.\033[0m\n";
+
+        //std::cout << "\033[0;32mProgram execution time: \033[0m"<< end_time <<"\033[0;32m ms.\033[0m\n";
+        //std::cout << "Program execution time: " << end_time  << " ms." << std::endl;
+    }  
+}
+#endif
+
+
 const int WIDTH=1540;
 const int HEIGHT=780;
 b2World* world;
