@@ -32,6 +32,40 @@ namespace DEBUG_TOOLS{
        //with bold ms
        std::cout << "\033[0;32m Program execution time: \033[0m" << "\033[1;32m" << (end_time / (double) CLOCKS_PER_SEC)<< "\033[0m" <<"\033[0;92m seconds.\033[0m\n";
 
+        
+        
+//                  foreground background
+// black        30         40
+// red          31         41
+// green        32         42
+// yellow       33         43
+// blue         34         44
+// magenta      35         45
+// cyan         36         46
+// white        37         47
+
+// Additionally, you can use these:
+
+// reset             0  (everything back to normal)
+// bold/bright       1  (often a brighter shade of the same colour)
+// underline         4
+// inverse           7  (swap foreground and background colours)
+// bold/bright off  21
+// underline off    24
+// inverse off      27
+
+    
+    
+        //exerimental colored composition
+        std::string magenta_opener{"\033[0;33m"};
+        std::string message_1{"msg_1: something"};
+        std::string closure{"\033[0m"};
+
+        std::string msg = magenta_opener + message_1 + closure;
+
+        std::cout << msg << std::endl;
+        
+        
         //std::cout << "\033[0;32mProgram execution time: \033[0m"<< end_time <<"\033[0;32m ms.\033[0m\n";
         //std::cout << "Program execution time: " << end_time  << " ms." << std::endl;
     }  
