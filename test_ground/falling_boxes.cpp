@@ -158,7 +158,7 @@ void display()
 
 static       SDL_Rect rect;
 
-int main(int argc,char** argv)
+int main(const int argc,const char** argv)
 {
     SDL_Window *window;
     SDL_Surface *image;
